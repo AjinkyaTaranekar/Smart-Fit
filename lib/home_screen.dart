@@ -122,16 +122,6 @@ class _HomeScreenState extends State<HomeScreen>
                       Account();
                 });
               });
-            }else if (index == 3) {
-              animationController.reverse().then<dynamic>((data) {
-                if (!mounted) {
-                  return;
-                }
-                setState(() {
-                  tabBody =
-                      TrainingScreen(animationController: animationController);
-                });
-              });
             }
           },
         ),
