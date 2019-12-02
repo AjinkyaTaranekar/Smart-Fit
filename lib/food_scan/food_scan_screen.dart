@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_vision/flutter_mobile_vision.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:barcode_scan/barcode_scan.dart';
+
+import '../app_theme.dart';
 
 class FoodScanner extends StatefulWidget {
   @override
@@ -11,14 +12,6 @@ class FoodScanner extends StatefulWidget {
 }
 
 class _FoodScannerState extends State<FoodScanner> {
-  int _cameraOcr = FlutterMobileVision.CAMERA_BACK;
-  bool _autoFocusOcr = true;
-  bool _torchOcr = false;
-  bool _multipleOcr = true;
-  bool _waitTapOcr = true;
-  bool _showTextOcr = true;
-  Size _previewOcr;
-  List<OcrText> _textsOcr = [];
   //Product
   String cardbody = "Please go ahead and scan your item!";
   String type, category, calory, name;
@@ -26,9 +19,6 @@ class _FoodScannerState extends State<FoodScanner> {
   @override
   void initState() {
     super.initState();
-    FlutterMobileVision.start().then((previewSizes) => setState(() {
-          _previewOcr = previewSizes[_cameraOcr].first;
-        }));
     BackButtonInterceptor.add(myInterceptor);
   }
 
@@ -43,177 +33,141 @@ class _FoodScannerState extends State<FoodScanner> {
     return true;
   }
 
-  List<DropdownMenuItem<int>> _getCameras() {
-    List<DropdownMenuItem<int>> cameraItems = [];
+  
 
-    cameraItems.add(new DropdownMenuItem(
-      child: new Text('BACK'),
-      value: FlutterMobileVision.CAMERA_BACK,
-    ));
-
-    cameraItems.add(new DropdownMenuItem(
-      child: new Text('FRONT'),
-      value: FlutterMobileVision.CAMERA_FRONT,
-    ));
-
-    return cameraItems;
-  }
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.keyboard_arrow_left,
-            color: Colors.black,
-          ),
-          onPressed: () => Navigator.pop(context, '0.0'),
-        ),
-        title: const Text(
-          'Harmony Health',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
+        title: Text("Food Scan"),
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.all(20),
-              child: new Text("Which camera would you like to use?",
-                  style: TextStyle(fontSize: 18))),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 18.0,
-              right: 18.0,
-            ),
-            child: new DropdownButton(
-              items: _getCameras(),
-              onChanged: (value) {
-                _previewOcr = null;
-                setState(() => _cameraOcr = value);
-              },
-              value: _cameraOcr,
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.all(20),
-              child: new Text("Please turn on if in low light environemnts.",
-                  style: TextStyle(fontSize: 18))),
-          SwitchListTile(
-            title: const Text('Torch'),
-            value: _torchOcr,
-            onChanged: (value) => setState(() => _torchOcr = value),
-          ),
-          Center(
-            child: RaisedButton(
-              color: Colors.blue,
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              onPressed: _read,
-              child: Text(
-                "Let's Scan",
-                style: TextStyle(color: Colors.white),
-              ),
-              shape: StadiumBorder(),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Stack(
+      body: new Center(
+        child: new ListView(
+          //mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Column(
+              ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(20.0),
                 children: <Widget>[
-                  DecoratedBox(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                          color: Colors.white),
-                      child: Container(
-                        width: (0.8) * MediaQuery.of(context).size.width,
-                        height: 0.43 * MediaQuery.of(context).size.height,
-                        child: Text(cardbody,
-                        style: TextStyle(
-                          fontSize: 25
-                        )),
-                      )),
-                  Container(height: 20.0)
+                  CustomText("Bienvenue !", factor: 2.0,),
+                  new Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                    color: AppTheme.white.withOpacity(topBarOpacity),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(32.0),
+                    ),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: AppTheme.grey
+                              .withOpacity(0.4 * topBarOpacity),
+                          offset: const Offset(1.1, 1.1),
+                          blurRadius: 10.0),
+                    ],
+                  ),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Merci à",),
+                        FlatButton(
+                          padding: EdgeInsets.all(0.0),
+                          child: Text("OpenFoodFacts", style: TextStyle(decoration: TextDecoration.underline),),
+                          onPressed: _launchOpenFoodFacts,
+                        ),
+                        Text(" pour leur base de données libre  "),
+                        Image.asset('lib/images/openFoodFactsLogo.png', scale: 5.0,),
+                      ],
+                    ),
+                  ),
+                  new Container(
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppTheme.white.withOpacity(topBarOpacity),
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(32.0),
+                      ),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: AppTheme.grey
+                              .withOpacity(0.4 * topBarOpacity),
+                          offset: const Offset(1.1, 1.1),
+                          blurRadius: 10.0),
+                      ],
+                    ),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          child: Text("Avertissement: la base de données peut être incomplète ou erronnée, elle est maintenue par OpenFoodFacts ainsi que ses utilisateurs.\nVous pouvez aussi y contribuer en corrigeant ou en ajoutant des produits !"),
+                        ),
+                      ],
+                    ),
+                  ),
+                  new Container(
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                    color: AppTheme.white.withOpacity(topBarOpacity),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(32.0),
+                    ),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: AppTheme.grey
+                              .withOpacity(0.4 * topBarOpacity),
+                          offset: const Offset(1.1, 1.1),
+                          blurRadius: 10.0),
+                    ],
+                  ),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          child: Text("L'application nécessite d'être connectée au réseau pour fonctionner.\nDans une future version un contrôle sera effectué."),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-              Column(children: <Widget>[
-                Container(height: 0.4 * MediaQuery.of(context).size.height),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton(
-                      shape: StadiumBorder(),
-                      color: Colors.red,
-                      child: Text("No",
-                          style: TextStyle(color: Colors.white, fontSize: 15)),
-                      onPressed: () => Navigator.pop(context, '0.0'),
-                    ),
-                    SizedBox(
-                      width: 25,
-                    ),
-                    FlatButton(
-                      shape: StadiumBorder(),
-                      color: Colors.blue,
-                      child: Text("Yes",
-                          style: TextStyle(color: Colors.white, fontSize: 15)),
-                      onPressed: () => Navigator.pop(context, calory),
-                    ),
-                  ],
-                )
-              ])
-            ],
-          )
-        ],
+            ]
+        ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.camera_alt),
+        label: Text("Scan"),
+        onPressed:  _scanQR,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Future<Null> _read() async {
-    List<OcrText> texts = [];
-    try {
-      texts = await FlutterMobileVision.read(
-        flash: _torchOcr,
-        autoFocus: _autoFocusOcr,
-        multiple: _multipleOcr,
-        waitTap: _waitTapOcr,
-        showText: _showTextOcr,
-        preview: _previewOcr,
-        camera: _cameraOcr,
-        fps: 2.0,
-      );
-    } on Exception {
-      texts.add(new OcrText('Failed to recognize text.'));
+  _launchOpenFoodFacts() async {
+    const url = 'https://world.openfoodfacts.org';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
-
-    if (!mounted) return;
-    setState(() => _textsOcr = texts);
-    for (var items in _textsOcr) getData(items.value);
   }
-
-  Future<Null> getData(proname) async {
-    var response = await http.get(
-        Uri.encodeFull("http://192.168.137.1:8080/calories/" + proname),
-        headers: {"Accept": "application/json"});
-    print(response.body);
-    if (response.body != "") {
+    Future _scanQR() async {
+    try {
+      String qrResult = await BarcodeScanner.scan();
       setState(() {
-        name = jsonDecode(response.body.split(',')[0].split(":")[1]);
-        category = jsonDecode(response.body.split(',')[1].split(":")[1]);
-        type = jsonDecode(response.body.split(',')[2].split(":")[1]);
-        calory = jsonDecode(response.body.split(',')[3].split(":")[1]).toString();
-        cardbody = "The item you selected is " +
-            name.toUpperCase() +
-            ", it belongs to the category of " +
-            category +
-            ". It has " +
-            calory +
-            " calories per gram." +
-            "Please let us know that are you going to consume this product?";
+        result = qrResult;
+        Navigator.push(context, new MaterialPageRoute(
+            builder: (BuildContext context) {
+              return new Article(url : 'https://world.openfoodfacts.org/api/v0/product/'+result+'.json');
+            })
+        );
       });
     }
-    print(cardbody);
+    on PlatformException catch (ex) {
+      if (ex.code == BarcodeScanner.CameraAccessDenied) { setState(() { result = "Camera permission was denied"; }); }
+      else { setState(() { result = "Unknown Error $ex"; }); }
+    }
+    on FormatException { setState(() { result = "You pressed the back button before scanning anything"; }); }
+    catch (ex) { setState(() { result = "Unknown Error $ex"; }); }
   }
 }
