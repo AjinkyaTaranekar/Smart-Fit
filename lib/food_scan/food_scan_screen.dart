@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:best_flutter_ui_templates/food_scan/ArticleDetail.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../app_theme.dart';
 
@@ -49,18 +51,17 @@ class _FoodScannerState extends State<FoodScanner> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(20.0),
                 children: <Widget>[
-                  CustomText("Bienvenue !", factor: 2.0,),
                   new Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                    color: AppTheme.white.withOpacity(topBarOpacity),
+                    color: AppTheme.white.withOpacity(1),
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(32.0),
                     ),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
                           color: AppTheme.grey
-                              .withOpacity(0.4 * topBarOpacity),
+                              .withOpacity(0.4 * 1),
                           offset: const Offset(1.1, 1.1),
                           blurRadius: 10.0),
                     ],
@@ -83,14 +84,14 @@ class _FoodScannerState extends State<FoodScanner> {
                     padding: const EdgeInsets.all(16.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: AppTheme.white.withOpacity(topBarOpacity),
+                      color: AppTheme.white.withOpacity(1),
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(32.0),
                       ),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: AppTheme.grey
-                              .withOpacity(0.4 * topBarOpacity),
+                              .withOpacity(0.4 * 1),
                           offset: const Offset(1.1, 1.1),
                           blurRadius: 10.0),
                       ],
@@ -108,14 +109,14 @@ class _FoodScannerState extends State<FoodScanner> {
                     padding: const EdgeInsets.all(16.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                    color: AppTheme.white.withOpacity(topBarOpacity),
+                    color: AppTheme.white.withOpacity(1),
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(32.0),
                     ),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
                           color: AppTheme.grey
-                              .withOpacity(0.4 * topBarOpacity),
+                              .withOpacity(0.4 * 1),
                           offset: const Offset(1.1, 1.1),
                           blurRadius: 10.0),
                     ],
@@ -152,7 +153,8 @@ class _FoodScannerState extends State<FoodScanner> {
     }
   }
     Future _scanQR() async {
-    try {
+      var result;
+    {
       String qrResult = await BarcodeScanner.scan();
       setState(() {
         result = qrResult;
@@ -163,11 +165,6 @@ class _FoodScannerState extends State<FoodScanner> {
         );
       });
     }
-    on PlatformException catch (ex) {
-      if (ex.code == BarcodeScanner.CameraAccessDenied) { setState(() { result = "Camera permission was denied"; }); }
-      else { setState(() { result = "Unknown Error $ex"; }); }
-    }
-    on FormatException { setState(() { result = "You pressed the back button before scanning anything"; }); }
-    catch (ex) { setState(() { result = "Unknown Error $ex"; }); }
   }
 }
+
