@@ -14,10 +14,7 @@ class FoodScanner extends StatefulWidget {
 }
 
 class _FoodScannerState extends State<FoodScanner> {
-  //Product
-  String cardbody = "Please go ahead and scan your item!";
-  String type, category, calory, name;
-
+ 
   @override
   void initState() {
     super.initState();
