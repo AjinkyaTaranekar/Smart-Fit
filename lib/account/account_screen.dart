@@ -54,9 +54,8 @@ class _AccountState extends State<Account> with TickerProviderStateMixin {
     const int count = 9;
 
     listViews.add(
-      TitleView(
-        titleTxt: 'Mediterranean diet',
-        subTxt: 'Details',
+      ImageView(
+        image: 'assets/images/userImage',
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController,
             curve:
