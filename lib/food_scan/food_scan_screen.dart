@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:best_flutter_ui_templates/food_scan/ArticleDetail.dart';
+import 'package:best_flutter_ui_templates/ui_view/scan_food_view.dart';
 import 'package:best_flutter_ui_templates/ui_view/title_view.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -60,8 +60,8 @@ class _FoodScannerState extends State<FoodScanner> with TickerProviderStateMixin
 
     listViews.add(
       TitleView(
-        titleTxt: 'Mediterranean diet',
-        subTxt: 'Details',
+        titleTxt: 'Meals today',
+        subTxt: 'Add',
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController,
             curve:
@@ -69,43 +69,16 @@ class _FoodScannerState extends State<FoodScanner> with TickerProviderStateMixin
         animationController: widget.animationController,
       ),
     );
+    listViews.add(
+      ScanFoodView(
+        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+            parent: widget.animationController,
+            curve:
+                Interval((1 / count) * 1, 1.0, curve: Curves.fastOutSlowIn))),
+        animationController: widget.animationController,
+      ),
+    );
     
-    listViews.add(
-      TitleView(
-        titleTxt: 'Meals today',
-        subTxt: 'Customize',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-    );
-
-    listViews.add(
-      TitleView(
-        titleTxt: 'Body measurement',
-        subTxt: 'Today',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-    );
-
-    listViews.add(
-      TitleView(
-        titleTxt: 'Water',
-        subTxt: 'Amount of Water Drank',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 6, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-    );
-
   }
 
   Future<bool> getData() async {
@@ -258,19 +231,4 @@ class _FoodScannerState extends State<FoodScanner> with TickerProviderStateMixin
       ],
     );
   }
-    Future _scanQR() async {
-      var result;
-    {
-      String qrResult = await BarcodeScanner.scan();
-      setState(() {
-        result = qrResult;
-        Navigator.push(context, new MaterialPageRoute(
-            builder: (BuildContext context) {
-              return new Article(url : 'https://world.openfoodfacts.org/api/v0/product/'+result+'.json');
-            })
-        );
-      });
-    }
-  }
 }
-
