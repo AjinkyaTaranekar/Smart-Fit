@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen>
                 }
                 setState(() {
                   tabBody =
-                      FoodScanner();
+                      FoodScanner(animationController: animationController);
                 });
               });
             } else if ( index == 3) {
