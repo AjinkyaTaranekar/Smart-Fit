@@ -61,20 +61,6 @@ class _ScannerState extends State<Scanner> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.keyboard_arrow_left,
-            color: Colors.black,
-          ),
-          onPressed: () => Navigator.pop(context, '0.0'),
-        ),
-        title: const Text(
-          'Harmony Health',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-      ),
       body: Column(
         children: <Widget>[
           Padding(
