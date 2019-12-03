@@ -19,20 +19,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+ 
+  barcode_scan: ^1.0.0
+  http: ^0.12.0+2
+ 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   font_awesome_flutter: ^8.5.0
   smooth_star_rating: ^1.0.3
   intl: ^0.16.0
-  barcode_scan: ^1.0.0
-  url_launcher: ^5.0.2
-  http: ^0.12.0+1
-  pedometer: ^1.0.0
-  charts_flutter: ^0.8.1
-  back_button_interceptor: ^4.1.1 
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
