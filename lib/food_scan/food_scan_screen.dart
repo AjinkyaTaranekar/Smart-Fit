@@ -4,7 +4,6 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:best_flutter_ui_templates/ui_view/scan_food_view.dart';
 import 'package:best_flutter_ui_templates/ui_view/title_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_mobile_vision/flutter_mobile_vision.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -147,7 +146,7 @@ class _FoodScannerState extends State<FoodScanner> with TickerProviderStateMixin
     );
     listViews.add(
       TitleView(
-        titleTxt: 'Please turn on torch \nIf in low light environments',
+        titleTxt: 'Please turn on torch. \nIf in low light environments',
         animationController: widget.animationController,
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController,
@@ -349,35 +348,12 @@ Widget scanFoodButton({AnimationController animationController, Animation animat
               transform: Matrix4.translationValues(
                   0.0, 30 * (1.0 - animation.value), 0.0),
               child: Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.white.withOpacity(topBarOpacity),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(32.0),
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: AppTheme.grey
-                            .withOpacity(0.4 * topBarOpacity),
-                        offset: const Offset(1.1, 1.1),
-                        blurRadius: 10.0),
-                  ],
-                ),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: MediaQuery.of(context).padding.top,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 16,
-                          right: 16,
-                          top: 46 - 8.0 * topBarOpacity,
-                          bottom: 12 - 8.0 * topBarOpacity),
-                      child: Row(
+                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
-                              child: RaisedButton(
+                          RaisedButton(
                                  onPressed: read,
                                 textColor: Colors.white,
                                 padding: const EdgeInsets.all(0.0),
@@ -394,11 +370,10 @@ Widget scanFoodButton({AnimationController animationController, Animation animat
                                   padding: const EdgeInsets.all(10.0),
                                   child: const Text(
                                     'Scan Food',
-                                    style: TextStyle(fontSize: 20)
+                                    style: TextStyle(fontSize: 18)
                                   ),
                                 ),
                               ),
-                          ),
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 8,
@@ -407,7 +382,6 @@ Widget scanFoodButton({AnimationController animationController, Animation animat
                           ),
                         ],
                       ),
-                    )
                   ],
                 ),
               ),
@@ -430,24 +404,8 @@ Widget displayFoodContent({AnimationController animationController, Animation an
               transform: Matrix4.translationValues(
                   0.0, 30 * (1.0 - animation.value), 0.0),
               child: Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.white.withOpacity(topBarOpacity),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(32.0),
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: AppTheme.grey
-                            .withOpacity(0.4 * topBarOpacity),
-                        offset: const Offset(1.1, 1.1),
-                        blurRadius: 10.0),
-                  ],
-                ),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: MediaQuery.of(context).padding.top,
-                    ),
                     Padding(
                       padding: EdgeInsets.only(
                           left: 16,
@@ -535,24 +493,8 @@ Widget chooseTorch({String titleTxt, AnimationController animationController, An
               transform: Matrix4.translationValues(
                   0.0, 30 * (1.0 - animation.value), 0.0),
               child: Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.white.withOpacity(topBarOpacity),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(32.0),
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: AppTheme.grey
-                            .withOpacity(0.4 * topBarOpacity),
-                        offset: const Offset(1.1, 1.1),
-                        blurRadius: 10.0),
-                  ],
-                ),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: MediaQuery.of(context).padding.top,
-                    ),
                     Padding(
                       padding: EdgeInsets.only(
                           left: 16,
@@ -562,13 +504,11 @@ Widget chooseTorch({String titleTxt, AnimationController animationController, An
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
-                              child: SwitchListTile(
+                          SwitchListTile(
                                 title: Text(titleTxt),
                                 value: _torchOcr,
                                 onChanged: (value) => setState(() => _torchOcr = value),
                             ), 
-                          ),
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 8,
@@ -600,35 +540,12 @@ Widget chooseCameraButton({AnimationController animationController, Animation an
               transform: Matrix4.translationValues(
                   0.0, 30 * (1.0 - animation.value), 0.0),
               child: Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.white.withOpacity(topBarOpacity),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(32.0),
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: AppTheme.grey
-                            .withOpacity(0.4 * topBarOpacity),
-                        offset: const Offset(1.1, 1.1),
-                        blurRadius: 10.0),
-                  ],
-                ),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: MediaQuery.of(context).padding.top,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 16,
-                          right: 16,
-                          top: 46 - 8.0 * topBarOpacity,
-                          bottom: 12 - 8.0 * topBarOpacity),
-                      child: Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
-                                  child: new DropdownButton(
+                           new DropdownButton(
                                     items: _getCameras(),
                                     onChanged: (value) {
                                       _previewOcr = null;
@@ -636,7 +553,6 @@ Widget chooseCameraButton({AnimationController animationController, Animation an
                                     },
                                     value: _cameraOcr,
                                   ),
-                                ),
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 8,
@@ -645,7 +561,6 @@ Widget chooseCameraButton({AnimationController animationController, Animation an
                           ),
                         ],
                       ),
-                    )
                   ],
                 ),
               ),
