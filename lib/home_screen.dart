@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
                 }
                 setState(() {
                   tabBody =
-                      Account();
+                      Account(animationController: animationController);
                 });
               });
             }
